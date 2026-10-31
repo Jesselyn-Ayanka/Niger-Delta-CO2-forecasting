@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
 </p>
 
-<h2>Executive Summary and Project Motivation</h2>
+<h2> Summary and Project Motivation</h2>
 
 <p>Nigeria consistently ranks among the top gas flaring nations globally, with routine flaring across the Niger Delta representing a dual crisis: millions of tonnes of preventable CO2 equivalent emissions entering the atmosphere annually, and billions of dollars in wasted natural gas that could otherwise power domestic energy infrastructure.</p>
 
@@ -120,12 +120,27 @@
 <h3>3. Regulatory Uncertainty Quantification</h3>
 <p>For policy enforcement, point forecasts are insufficient because regulators require confidence bounds to distinguish measurement noise from true regulatory violations. Our calibrated quantile models achieved an empirical coverage (PICP) of <b>80.27% to 80.37%</b> against an 80% nominal target, with TFT providing the tightest, most actionable uncertainty intervals (364,668.54 Tonnes average width at a 1 day horizon).</p>
 
-<h2>Replication Instructions</h2>
+<h2>Repository Structure</h2>
 
-<ol>
-  <li>Clone the repository and install dependencies from <code>requirements.txt</code>.</li>
-  <li>Launch the master notebook in a CUDA enabled environment (e.g., Kaggle P100 or T4 GPU or local workstation) and execute sequentially to reproduce all diagnostic statistics, trained model weights, Diebold Mariano tests, and thesis figures.</li>
-</ol>
+<pre>
+data/                  World Bank GGFR benchmarks, macroeconomic series, and reconstructed panels
+notebooks/             Master GPU execution notebook (EDA, Training, Evaluation, Figures)
+outputs/               High resolution spatial maps, SHAP plots, and evaluation matrices
+requirements.txt       Python environment dependencies
+README.md              Project overview and policy brief
+</pre>
+
+<h2>Reproducibility and Environment Setup</h2>
+
+<p>1. Clone the repository and install the required Python packages:</p>
+
+<pre><code>git clone https://github.com/Jesselyn-Ayanka/Niger-Delta-CO2_forecasting.git
+cd Niger-Delta-CO2_forecasting
+pip install -r requirements.txt</code></pre>
+
+<p>2. Launch the execution notebook in Jupyter Lab or a CUDA enabled environment (such as a Kaggle P100 or T4 GPU instance) and run all cells sequentially:</p>
+
+<pre><code>jupyter notebook notebooks/niger_delta_co2_forecasting.ipynb</code></pre>
 
 <h2>Citation</h2>
 
