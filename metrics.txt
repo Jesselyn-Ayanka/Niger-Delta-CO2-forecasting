@@ -1,0 +1,81 @@
+1) worldbank benchmarks
+
+Loading World Bank benchmark: Flare-volume-and-intensity-estimates-2012-2024.xlsx
+Derived FIRMS FRP to BCM Coefficient: 1.67092888e-04
+ NEW VALIDATION METRICS (Post-Calibration)
+R² Score:   -0.2625
+MAPE:       15.01%
+Mean Bias:  -0.1414 BCM
+
+2) reconstructed panel
+Engineering autoregressive lags and rolling statistics...
+Site-Level Dataset:     74,666 rows | 124 sites
+National-Level Dataset: 4,372 days (2012-02-19 to 2024-12-31)
+Constructed Spatial Adjacency Matrix: (124, 124) (Mean distance: 131.3 km)
+
+3) PHASE B DIAGNOSTIC EDA (STEPS 5 & 6)
+
+[SPATIAL CONCENTRATION]
+  Gini Coefficient:        0.7542
+
+[TEMPORAL STATIONARITY]
+  ADF Statistic:           -5.5717 (p = 1.4626e-06) -> Stationary
+  KPSS Statistic:          0.1371 (p = 1.0000e-01) -> Stationary
+
+[TEMPORAL DEPENDENCY]
+  Hurst Exponent (H):      0.2093 -> Mean-Reverting
+
+[SPATIAL AUTOCORRELATION]
+  Global Moran's I:        0.0965 (p = 0.0320)
+  Significant Clustering:  YES (p < 0.05)
+
+4) Descriptive Statistics of the Analysis-Ready Panel
+ 	Aggregation Level	N Series	N Observations	Mean (Tonnes)	SD	Median	Min	Max	% Zero Days	% Imputed	Period
+0	National	1	4372	24,339,789.59	26,299,056.86	14,855,080.37	45,143.91	158,484,583.70	0.00%	0.00%	2012-02-19 to 2024-12-31
+1	Site (124 Sites)	124	74666	1,425,194.33	1,881,259.73	782,525.00	15,383.71	26,036,807.89	0.00%	0.00%	2012-02-19 to 2024-12-31
+
+5)  STEP 8: ML BASELINE TRAINING (XGBOOST)
+Training Set Size: 59,169 rows | Test Set Size: 15,497 rows
+Number of Input Features: 24
+
+Training XGBoost baseline model...
+
+XGBOOST OUT-OF-TIME TEST PERFORMANCE
+  RMSE:  210842.07 Tonnes
+  MAE:   120601.32 Tonnes
+  WAPE:  10.23%
+  R²:    0.9742
+
+6) STEP 9 — STABILIZED LSTM SEQUENCE MODEL TRAINING
+Training Stabilized LSTM on device: cuda...
+Epoch [1/5] — Scaled Loss: 0.4753
+Epoch [2/5] — Scaled Loss: 0.2623
+Epoch [3/5] — Scaled Loss: 0.2503
+Epoch [4/5] — Scaled Loss: 0.1979
+Epoch [5/5] — Scaled Loss: 0.1548
+
+ STABILIZED LSTM OUT-OF-TIME TEST PERFORMANCE
+  RMSE:  649994.19 Tonnes
+  MAE:   411156.22 Tonnes
+  WAPE:  34.88%
+  R²:    0.7549
+
+7) STEP 10 — SPATIO-TEMPORAL GNN (ST-GCN) TRAINING
+Training Stabilized ST-GCN on device: cuda...
+Epoch [1/5] — Stabilized Graph Loss: 0.7636
+Epoch [2/5] — Stabilized Graph Loss: 0.7405
+Epoch [3/5] — Stabilized Graph Loss: 0.7169
+Epoch [4/5] — Stabilized Graph Loss: 0.7174
+Epoch [5/5] — Stabilized Graph Loss: 0.7018
+
+FINAL ST-GCN OUT-OF-TIME TEST PERFORMANCE
+  RMSE:  476452.53 Tonnes
+  MAE:   159475.12 Tonnes
+  WAPE:  117.96%
+  R²:    0.3112
+
+8)Training quantile regressors for P10, P50, and P90 uncertainty bands...
+
+PROBABILISTIC CALIBRATION RESULTS
+  Nominal 80% Interval Coverage (PICP): 97.50%
+  Average P10-P90 Interval Width:       1448210.75 Tonnes
